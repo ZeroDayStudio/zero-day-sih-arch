@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f7f9fb;
+  --foreground: #0f2027;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-geist-sans), sans-serif;
+  background-image: linear-gradient(#0f202708 1px, transparent 1px), linear-gradient(90deg, #0f202708 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+@layer components {
+  .paper-panel {
+    @apply border border-ink/10 bg-paper/90;
+    box-shadow: 0 8px 24px rgba(16, 42, 67, 0.06);
+  }
+
+  .eyebrow {
+    @apply font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-leaf;
+  }
+
+  .portal-link {
+    @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink;
+  }
+
+  .portal-link.active {
+    @apply bg-leaf text-paper shadow-lg shadow-leaf/20 hover:bg-leaf hover:text-paper;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

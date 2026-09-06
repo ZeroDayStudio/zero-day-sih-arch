@@ -1,0 +1,3 @@
+export function ScoreBar({ label, value, color = "bg-leaf" }: { label: string; value: number; color?: string }) {
+  return <div className="space-y-1.5"><div className="flex justify-between text-xs font-medium"><span className="text-ink/55">{label}</span><span>{value}%</span></div><div className="h-1.5 overflow-hidden rounded-full bg-ink/10"><div className={`h-full rounded-full ${color}`} style={{ width: `${value}%` }} /></div></div>;
+}

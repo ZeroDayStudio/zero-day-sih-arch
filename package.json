@@ -1,0 +1,25 @@
+{
+  "name": "zero-day-sih-arch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  "dev:client": "npm run dev --prefix client",
+  "dev:server": "npm run dev --prefix server",
+  "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yash-pluto/zero-day-sih-arch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yash-pluto/zero-day-sih-arch/issues"
+  },
+  "homepage": "https://github.com/Yash-pluto/zero-day-sih-arch#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}
