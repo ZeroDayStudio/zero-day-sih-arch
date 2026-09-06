@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { GlobalFooter, GlobalNav } from "../components/global-chrome";
 import { LanguageProvider } from "../components/language-context";
+import { AuthProvider } from "../components/auth-context";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -39,11 +40,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <LanguageProvider>
+        <LanguageProvider><AuthProvider>
           <GlobalNav />
           <div id="main-content">{children}</div>
           <GlobalFooter />
-        </LanguageProvider>
+        </AuthProvider></LanguageProvider>
       </body>
     </html>
   );

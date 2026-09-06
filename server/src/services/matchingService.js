@@ -3,7 +3,7 @@ function clamp(value) {
 }
 
 function calculateMatchScore({ studentSkills = [], studentDisciplines = [], studentLocation = '', availability = 100, eligibility = 100, opportunity }) {
-  const requiredSkills = new Set(opportunity.requiredSkills || []);
+  const requiredSkills = new Set((opportunity.requiredSkills || []).map((skill) => skill && skill._id ? skill._id.toString() : skill.toString()));
   const matchingSkills = studentSkills.filter((skill) => requiredSkills.has(skill.skillId));
   const skillFit = requiredSkills.size === 0
     ? 100

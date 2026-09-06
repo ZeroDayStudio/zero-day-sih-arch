@@ -4,6 +4,7 @@ const opportunitySchema = new mongoose.Schema(
   {
     employerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     title: { type: String, required: true, trim: true },
+    description: { type: String, trim: true },
     type: { type: String, enum: ['internship', 'placement', 'fellowship', 'apprenticeship'], required: true },
     requiredSkills: [{ type: mongoose.Schema.Types.ObjectId, ref: 'SkillTaxonomy' }],
     disciplines: [{ type: String, trim: true }],
@@ -12,6 +13,7 @@ const opportunitySchema = new mongoose.Schema(
     stipend: { type: Number, min: 0 },
     eligibility: { type: String, trim: true },
     availability: { type: String, trim: true },
+    status: { type: String, enum: ['draft', 'open', 'closed'], default: 'open' },
   },
   { timestamps: true }
 );

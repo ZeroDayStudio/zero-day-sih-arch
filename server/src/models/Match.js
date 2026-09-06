@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const matchSchema = new mongoose.Schema(
   {
     studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    opportunityId: { type: String, required: true, trim: true },
+    opportunityId: { type: mongoose.Schema.Types.ObjectId, ref: 'Opportunity', required: true },
     score: { type: Number, required: true, min: 0, max: 100 },
     breakdown: {
       skillFit: { type: Number, required: true, min: 0, max: 100 },
@@ -12,6 +12,7 @@ const matchSchema = new mongoose.Schema(
       locationFit: { type: Number, required: true, min: 0, max: 100 },
       availability: { type: Number, required: true, min: 0, max: 100 },
     },
+    explanation: { type: String, trim: true },
   },
   { timestamps: true }
 );

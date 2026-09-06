@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+const ALLOWED_ROLES = ['student', 'institution', 'employer', 'mentor', 'admin'];
+
 function createToken(user) {
   return jwt.sign(
     { userId: user._id.toString(), role: user.role },
@@ -19,6 +21,9 @@ async function register(req, res) {
 
   if (!name || !email || !password || !role) {
     return res.status(400).json({ message: 'name, email, password, and role are required' });
+  }
+  if (!ALLOWED_ROLES.includes(role)) {
+    return res.status(400).json({ message: `role must be one of: ${ALLOWED_ROLES.join(', ')}` });
   }
   if (password.length < 8) {
     return res.status(400).json({ message: 'Password must contain at least 8 characters' });
