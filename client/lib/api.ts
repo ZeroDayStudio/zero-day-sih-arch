@@ -16,8 +16,9 @@ api.interceptors.request.use((config) => {
 export type Role = "student" | "institution" | "employer" | "mentor" | "admin";
 export type User = { id: string; name: string; email: string; role: Role };
 export type MatchBreakdown = { skillFit: number; domainFit: number; eligibility: number; locationFit: number; availability: number };
-export type Opportunity = { _id: string; title: string; description?: string; type: string; disciplines: string[]; location?: string; remote: boolean; stipend?: number; requiredSkills?: Array<{ _id: string; skillNode: string; discipline: string }>; employerId?: { _id: string; name: string }; status?: string };
+export type Opportunity = { _id: string; title: string; description?: string; type: string; disciplines: string[]; location?: string; remote: boolean; stipend?: number; eligibility?: string; availability?: string; requiredSkills?: Array<{ _id: string; skillNode: string; discipline: string }> | string[]; employerId?: { _id: string; name: string }; status?: string };
 export type Match = { _id: string; score: number; breakdown: MatchBreakdown; explanation?: string; opportunity: Opportunity };
+export type Application = { _id: string; status: string; studentId?: { name: string; email: string }; match?: { score: number; explanation?: string }; profile?: { disciplines?: string[]; location?: string } };
 
 export async function getTaxonomy(discipline?: string) {
   const response = await api.get("/taxonomy", { params: discipline ? { discipline } : {} });
@@ -54,7 +55,7 @@ export function createOpportunity(payload: Partial<Opportunity>) { return reques
 export function updateOpportunity(id: string, payload: Partial<Opportunity>) { return request<{ opportunity: Opportunity }>(api.patch(`/opportunities/${id}`, payload)); }
 export function applyToOpportunity(opportunityId: string, coverNote: string) { return request(api.post('/applications', { opportunityId, coverNote })); }
 export function getMyApplications() { return request(api.get('/applications/me')); }
-export function getApplicationsForOpportunity(id: string) { return request(api.get(`/applications/opportunity/${id}`)); }
+export function getApplicationsForOpportunity(id: string) { return request<{ applications: Application[] }>(api.get(`/applications/opportunity/${id}`)); }
 export function updateApplicationStatus(id: string, status: string) { return request(api.patch(`/applications/${id}/status`, { status })); }
 export function getMyMatches() { return request<{ matches: Match[]; weights: Record<string, number> }>(api.get('/matching/opportunities')); }
 export function getMatch(id: string) { return request<{ match: Match }>(api.post(`/matching/${id}`)); }

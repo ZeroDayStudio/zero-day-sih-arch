@@ -19,12 +19,12 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://ayush-skillsync.example"),
   title: {
-    default: "AYUSH SkillSync | Academia-Industry Portal",
+    default: "AYUSH SkillSync | Competency Exchange",
     template: "%s | AYUSH SkillSync",
   },
   description: "Real-Time Competency Metrics, Skill-Gap Analysis, and explainable opportunities for the AYUSH ecosystem.",
   openGraph: {
-    title: "AYUSH SkillSync | Academia-Industry Portal",
+    title: "AYUSH SkillSync | Competency Exchange",
     description: "A trusted platform for skill mapping, internships, and placement across AYUSH education and industry.",
     type: "website",
     siteName: "AYUSH SkillSync",

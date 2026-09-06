@@ -1,5 +1,5 @@
 {
   "nav": { "home": "Home", "opportunities": "Opportunities", "dashboard": "Dashboard", "passport": "Skill passport", "signIn": "Sign in", "language": "Language" },
   "footer": { "description": "A trusted digital infrastructure for AYUSH talent and opportunity.", "privacy": "Privacy", "accessibility": "Accessibility" },
-  "home": { "eyebrow": "Academia-Industry Portal", "title": "Map skills. Build opportunity.", "description": "AYUSH SkillSync connects verified learner competencies with curriculum intelligence, internships, and placement pathways.", "primary": "Enter the portal", "secondary": "View opportunities", "metrics": "Real-Time Competency Metrics", "roles": "Access by role", "student": "Student", "institution": "Institution", "employer": "Employer", "admin": "Administrator" }
+  "home": { "eyebrow": "AYUSH competency exchange", "title": "Map skills. Build opportunity.", "description": "AYUSH SkillSync connects verified learner competencies with curriculum intelligence, internships, and placement pathways.", "primary": "Open workspace", "secondary": "View opportunities", "metrics": "Real-Time Competency Metrics", "roles": "Access by role", "student": "Student", "institution": "Institution", "employer": "Employer", "admin": "Administrator" }
 }

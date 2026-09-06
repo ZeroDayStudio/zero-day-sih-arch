@@ -10,6 +10,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
+  overflow-x: hidden;
   font-family: var(--font-geist-sans), sans-serif;
   background-image: linear-gradient(#0f202708 1px, transparent 1px), linear-gradient(90deg, #0f202708 1px, transparent 1px);
   background-size: 32px 32px;
