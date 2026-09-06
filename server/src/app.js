@@ -19,10 +19,24 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 const app = express();
 
+const configuredOrigins = (process.env.CLIENT_ORIGIN || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const developmentOrigins = process.env.NODE_ENV === 'production'
+  ? []
+  : ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:3003'];
+const allowedOrigins = new Set([...configuredOrigins, ...developmentOrigins]);
+
 app.disable('x-powered-by');
 app.use(helmet());
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || true }));
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.has(origin)) return callback(null, true);
+    return callback(new Error('Origin is not allowed by CORS'));
+  },
+}));
 app.use(express.json({ limit: '1mb' }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 

@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const ALLOWED_ROLES = ['student', 'institution', 'employer', 'mentor', 'admin'];
+const PUBLIC_REGISTRATION_ROLES = ['student'];
 
 function createToken(user) {
   return jwt.sign(
@@ -22,8 +22,8 @@ async function register(req, res) {
   if (!name || !email || !password || !role) {
     return res.status(400).json({ message: 'name, email, password, and role are required' });
   }
-  if (!ALLOWED_ROLES.includes(role)) {
-    return res.status(400).json({ message: `role must be one of: ${ALLOWED_ROLES.join(', ')}` });
+  if (!PUBLIC_REGISTRATION_ROLES.includes(role)) {
+    return res.status(403).json({ message: 'Only student accounts can be created through public registration' });
   }
   if (password.length < 8) {
     return res.status(400).json({ message: 'Password must contain at least 8 characters' });

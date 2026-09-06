@@ -5,6 +5,8 @@ export const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+export const apiOrigin = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api").replace(/\/api\/?$/, "");
+
 api.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
     const token = window.localStorage.getItem("ayush_skillsync_token");
@@ -14,11 +16,15 @@ api.interceptors.request.use((config) => {
 });
 
 export type Role = "student" | "institution" | "employer" | "mentor" | "admin";
-export type User = { id: string; name: string; email: string; role: Role };
+export type User = { id: string; name: string; email: string; role: Role; institutionCode?: string };
 export type MatchBreakdown = { skillFit: number; domainFit: number; eligibility: number; locationFit: number; availability: number };
 export type Opportunity = { _id: string; title: string; description?: string; type: string; disciplines: string[]; location?: string; remote: boolean; stipend?: number; eligibility?: string; availability?: string; requiredSkills?: Array<{ _id: string; skillNode: string; discipline: string }> | string[]; employerId?: { _id: string; name: string }; status?: string };
 export type Match = { _id: string; score: number; breakdown: MatchBreakdown; explanation?: string; opportunity: Opportunity };
-export type Application = { _id: string; status: string; studentId?: { name: string; email: string }; match?: { score: number; explanation?: string }; profile?: { disciplines?: string[]; location?: string } };
+export type Application = { _id: string; status: string; opportunityId?: Opportunity; studentId?: { name: string; email: string }; match?: { score: number; explanation?: string }; profile?: { disciplines?: string[]; location?: string } };
+export type Candidate = { userId: string; name: string; disciplines?: string[]; location?: string; topVerifiedSkills: Array<{ proficiency: number; skillId: { skillNode: string; discipline: string } }>; profileStrength: number };
+export type ProfileSkill = { skillId: { _id: string; skillNode: string; discipline: string } | string; proficiency: number };
+export type ProfileEvidence = { _id: string; title: string; type: string; issuer?: string; status: string; reviewNote?: string; linkedSkillId?: string; fileUrl?: string };
+export type SkillProfile = { publicSlug?: string; disciplines?: string[]; location?: string; availability?: number; skills: ProfileSkill[]; evidence: ProfileEvidence[] };
 
 export async function getTaxonomy(discipline?: string) {
   const response = await api.get("/taxonomy", { params: discipline ? { discipline } : {} });
@@ -54,18 +60,20 @@ export function getOpportunity(id: string) { return request<{ opportunity: Oppor
 export function createOpportunity(payload: Partial<Opportunity>) { return request<{ opportunity: Opportunity }>(api.post('/opportunities', payload)); }
 export function updateOpportunity(id: string, payload: Partial<Opportunity>) { return request<{ opportunity: Opportunity }>(api.patch(`/opportunities/${id}`, payload)); }
 export function applyToOpportunity(opportunityId: string, coverNote: string) { return request(api.post('/applications', { opportunityId, coverNote })); }
-export function getMyApplications() { return request(api.get('/applications/me')); }
+export function getMyApplications() { return request<{ applications: Application[] }>(api.get('/applications/me')); }
 export function getApplicationsForOpportunity(id: string) { return request<{ applications: Application[] }>(api.get(`/applications/opportunity/${id}`)); }
 export function updateApplicationStatus(id: string, status: string) { return request(api.patch(`/applications/${id}/status`, { status })); }
 export function getMyMatches() { return request<{ matches: Match[]; weights: Record<string, number> }>(api.get('/matching/opportunities')); }
 export function getMatch(id: string) { return request<{ match: Match }>(api.post(`/matching/${id}`)); }
-export function getMyProfile() { return request<{ profile: Record<string, unknown> | null }>(api.get('/profile')); }
+export function getMyProfile() { return request<{ profile: SkillProfile | null }>(api.get('/profile')); }
+export function getPublicProfile(slug: string) { return request<{ profile: { name?: string; disciplines?: string[]; location?: string; skills: ProfileSkill[]; evidence: ProfileEvidence[] } }>(api.get(`/profile/public/${encodeURIComponent(slug)}`)); }
 export function updateMyProfile(payload: Record<string, unknown>) { return request(api.put('/profile', payload)); }
 export function uploadEvidence(formData: FormData) { return request(api.post('/profile/evidence', formData, { headers: { 'Content-Type': 'multipart/form-data' } })); }
 export type VerificationItem = { _id: string; title: string; studentUserId: string; student?: { name: string }; issuer?: string };
 export function getVerificationQueue() { return request<{ queue: VerificationItem[] }>(api.get('/verification/queue')); }
 export function reviewEvidence(studentId: string, evidenceId: string, payload: { status: string; reviewNote?: string }) { return request(api.patch(`/verification/${studentId}/${evidenceId}`, payload)); }
-export function searchCandidates(filters: Record<string, string | undefined> = {}) { return request(api.get('/candidates/search', { params: filters })); }
+export function searchCandidates(filters: Record<string, string | undefined> = {}) { return request<{ candidates: Candidate[] }>(api.get('/candidates/search', { params: filters })); }
 export type AdminReport = { placementRate: number; pendingVerification: number; usersByRole: Array<{ _id: string; count: number }> };
 export function getAdminReport() { return request<AdminReport>(api.get('/admin/report')); }
-export function getInstitutionReport(code: string) { return request<{ report: Record<string, unknown> }>(api.get(`/institutions/${code}/report`)); }
+export type InstitutionReport = { studentCount: number; profileCompleteness: number; placementRate: number; disciplineCoverage: Record<string, number> };
+export function getInstitutionReport(code: string) { return request<{ report: InstitutionReport }>(api.get(`/institutions/${encodeURIComponent(code)}/report`)); }

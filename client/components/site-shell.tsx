@@ -1,11 +1,20 @@
+/**
+ * @fileoverview Shared navigation and role-aware portal layout.
+ * Keeps workspace navigation consistent while enforcing the client-side role
+ * boundary before protected page content is rendered.
+ *
+ * @author Yash Vardhan
+ * @see https://github.com/Yash-pluto/zero-day-sih-arch
+ */
+
 "use client";
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { ChevronRight, CircleUserRound, FileBadge, LayoutDashboard, LogOut, Search, Settings2, Sprout, UsersRound } from "lucide-react";
+import { ChevronRight, CircleUserRound, FileBadge, LayoutDashboard, LogOut, Search, Settings2, Sprout } from "lucide-react";
 import { Brand } from "./brand";
-import { roleHome, roleLabel, useAuth } from "./auth-context";
+import { roleHome, roleLabel, roleNavigation, useAuth } from "./auth-context";
 
 export function SiteHeader() {
   const path = usePathname();
@@ -19,9 +28,15 @@ export function SiteHeader() {
 export function PortalShell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
   const router = useRouter();
-  const { user, signOut } = useAuth();
-  useEffect(() => { if (!user) router.replace("/login"); }, [router, user]);
-  const home = user ? roleHome(user.role) : "/login";
-  const links = [[home, "Overview", LayoutDashboard], ["/match", "Opportunities", Search], ["/passport", "Skill passport", FileBadge]] as const;
-  return <div className="min-h-screen bg-paper text-ink lg:flex"><aside className="hidden w-64 shrink-0 flex-col border-r border-ink/10 bg-[#eef1ea] p-5 lg:flex"><Link href="/" className="mb-12 px-2"><Brand /></Link><div className="eyebrow mb-4 px-3">{user ? `${roleLabel(user.role)} workspace` : "Workspace"}</div><nav className="space-y-1">{links.map(([href, label, Icon]) => <Link key={href} href={href} className={`portal-link ${path === href ? "active" : ""}`}><Icon size={17} />{label}</Link>)}</nav><div className="mt-10 eyebrow mb-4 px-3">Reference</div><nav className="space-y-1"><Link href="/taxonomy" className="portal-link"><Sprout size={17} />AYUSH taxonomy</Link>{(user?.role === "mentor" || user?.role === "admin") && <Link href="/dashboard" className="portal-link"><UsersRound size={17} />Mentor network</Link>}</nav><div className="mt-auto border-t border-ink/10 pt-4"><div className="portal-link"><CircleUserRound size={17} /><span className="flex-1">{user?.name || "Guest user"}<small className="block text-[11px] text-ink/40">{user ? `${roleLabel(user.role)} account` : "Not signed in"}</small></span><Settings2 size={15} /></div><button onClick={signOut} className="portal-link w-full text-left text-ink/40"><LogOut size={16} />Sign out</button></div></aside><main className="min-w-0 flex-1">{children}</main></div>;
+  const { user, ready, signOut } = useAuth();
+  const requiredRole = path.startsWith("/dashboard/student") || path.startsWith("/match/") || path.startsWith("/passport") ? "student" : path.startsWith("/dashboard/institution") ? "institution" : path.startsWith("/dashboard/employer") ? "employer" : path.startsWith("/dashboard/mentor") ? "mentor" : path.startsWith("/dashboard/admin") ? "admin" : undefined;
+  useEffect(() => {
+    if (!ready) return;
+    if (!user) router.replace("/login");
+    else if (requiredRole && user.role !== requiredRole) router.replace(roleHome(user.role));
+  }, [ready, requiredRole, router, user]);
+  if (!ready || !user || (requiredRole && user.role !== requiredRole)) return <div className="grid min-h-screen place-items-center bg-paper"><p className="eyebrow">Loading workspace...</p></div>;
+  const iconFor = (href: string) => href.includes("opportunities/new") ? FileBadge : href === "/taxonomy" ? Sprout : href === "/match" ? Search : LayoutDashboard;
+  const links = roleNavigation(user.role).map((item) => [item.href, item.label, iconFor(item.href)] as const);
+  return <div className="min-h-screen bg-paper text-ink lg:flex"><aside className="hidden w-64 shrink-0 flex-col border-r border-ink/10 bg-[#eef1ea] p-5 lg:flex"><Link href="/" className="mb-12 px-2"><Brand /></Link><div className="eyebrow mb-4 px-3">{`${roleLabel(user.role)} workspace`}</div><nav className="space-y-1">{links.map(([href, label, Icon]) => <Link key={href} href={href} className={`portal-link ${path === href ? "active" : ""}`}><Icon size={17} />{label}</Link>)}</nav><div className="mt-auto border-t border-ink/10 pt-4"><Link href="/settings" className="portal-link" aria-label="Open account settings"><CircleUserRound size={17} /><span className="flex-1">{user.name}<small className="block text-[11px] text-ink/40">{roleLabel(user.role)} account</small></span><Settings2 size={15} /></Link><button onClick={signOut} className="portal-link w-full text-left text-ink/40"><LogOut size={16} />Sign out</button></div></aside><main className="min-w-0 flex-1">{children}</main></div>;
 }

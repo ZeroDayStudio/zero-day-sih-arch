@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Explainable opportunity matching and persisted match results.
+ * Combines competency, domain, eligibility, location, and availability signals
+ * so each recommendation can be inspected by the student and employer.
+ *
+ * @author Yash Vardhan
+ * @see https://github.com/Yash-pluto/zero-day-sih-arch
+ */
+
 const Match = require('../models/Match');
 const Opportunity = require('../models/Opportunity');
 const SkillProfile = require('../models/SkillProfile');
@@ -20,7 +29,6 @@ async function scoreOpportunity(studentId, opportunity) {
     studentDisciplines: profile.disciplines || [],
     studentLocation: profile.location || '',
     availability: profile.availability,
-    // MVP simplification: verified evidence proxies structured eligibility until phase 2.
     eligibility: verifiedEvidence ? 100 : 65,
     opportunity,
   });

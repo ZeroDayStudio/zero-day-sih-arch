@@ -30,6 +30,7 @@ export const metadata: Metadata = {
     siteName: "AYUSH SkillSync",
   },
   twitter: { card: "summary_large_image" },
+  icons: { icon: "/zeroday-logo.jpeg", apple: "/zeroday-logo.jpeg" },
 };
 
 export default function RootLayout({

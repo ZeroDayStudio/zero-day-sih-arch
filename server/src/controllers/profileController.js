@@ -31,7 +31,11 @@ async function getPublicProfile(req, res) {
   const profile = await SkillProfile.findOne({ publicSlug: req.params.slug }).populate('skills.skillId', 'discipline skillNode').lean();
   if (!profile) return res.status(404).json({ message: 'Public passport not found' });
   const verifiedSkillIds = new Set((profile.evidence || []).filter((item) => item.status === 'verified' && item.linkedSkillId).map((item) => item.linkedSkillId.toString()));
-  return res.json({ profile: { name: (await require('../models/User').findById(profile.userId).select('name').lean())?.name, disciplines: profile.disciplines, location: profile.location, skills: profile.skills.filter((skill) => verifiedSkillIds.has(skill.skillId._id.toString()) || verifiedSkillIds.size === 0) } });
+  const user = await require('../models/User').findById(profile.userId).select('name').lean();
+  const evidence = (profile.evidence || [])
+    .filter((item) => item.status === 'verified')
+    .map(({ _id, title, type, issuer, linkedSkillId, fileUrl, reviewedBy }) => ({ _id, title, type, issuer, linkedSkillId, fileUrl, reviewedBy }));
+  return res.json({ profile: { name: user?.name, disciplines: profile.disciplines, location: profile.location, skills: profile.skills.filter((skill) => verifiedSkillIds.has(skill.skillId._id.toString()) || verifiedSkillIds.size === 0), evidence } });
 }
 
 module.exports = { getProfile, upsertProfile, addEvidence, getPublicProfile };

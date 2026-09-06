@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true, maxlength: 120 },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     passwordHash: { type: String, required: true, select: false },
-    // MVP linkage; a multi-tenant deployment would use a relational membership model.
     institutionCode: { type: String, trim: true, uppercase: true },
     role: {
       type: String,

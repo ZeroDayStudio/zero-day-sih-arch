@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Globe2, Menu, X } from "lucide-react";
+import { Globe2, Menu, Settings2, X } from "lucide-react";
 import { useState } from "react";
 import { Brand } from "./brand";
 import { useLanguage } from "./language-context";
-import { roleHome, roleLabel, useAuth } from "./auth-context";
+import { roleHome, roleLabel, roleNavigation, useAuth } from "./auth-context";
 
 export function GlobalNav() {
   const pathname = usePathname();
@@ -15,7 +15,7 @@ export function GlobalNav() {
   const { user, signOut } = useAuth();
   const copy = dictionary.nav;
   const workspace = user ? roleHome(user.role) : "/login";
-  const links = [["/", copy.home], ["/match", copy.opportunities], [workspace, copy.dashboard], ["/passport", copy.passport]];
+  const links = user ? [["/", copy.home], ...roleNavigation(user.role).map((item) => [item.href, item.label])] : [["/", copy.home], ["/match", copy.opportunities], ["/login", copy.signIn]];
 
   return <>
     <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-paper">Skip to content</a>
@@ -27,7 +27,7 @@ export function GlobalNav() {
         </nav>
         <div className="flex items-center gap-2">
           <button type="button" onClick={toggleLocale} aria-label={`${copy.language}: switch to ${locale === "en" ? "Hindi" : "English"}`} className="flex items-center gap-1.5 rounded-lg border border-ink/15 px-2.5 py-2 text-xs font-bold hover:bg-ink/5"><Globe2 size={15} aria-hidden="true" /><span className={locale === "en" ? "text-leaf" : "text-ink/40"}>En</span><span className="text-ink/25">/</span><span className={locale === "hi" ? "text-leaf" : "text-ink/40"}>हि</span></button>
-          {user ? <div className="hidden items-center gap-2 sm:flex"><Link href={workspace} className="flex items-center gap-2 rounded-lg border border-ink/15 px-3 py-2 text-left hover:bg-ink/5"><span className="grid h-7 w-7 place-items-center rounded-full bg-moss text-xs font-bold text-ink">{user.name.charAt(0).toUpperCase()}</span><span><strong className="block max-w-28 truncate text-xs">{user.name}</strong><small className="block text-[10px] text-ink/50">{roleLabel(user.role)}</small></span></Link><button type="button" onClick={signOut} className="rounded-lg border border-ink/15 px-3 py-2 text-xs font-semibold text-ink/60 hover:bg-ink/5">Sign out</button></div> : <Link href="/login" className="hidden rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-paper hover:bg-leaf sm:block">{copy.signIn}</Link>}
+          {user ? <div className="hidden items-center gap-2 sm:flex"><Link href="/settings" aria-label="Open account settings" className="flex items-center gap-2 rounded-lg border border-ink/15 px-3 py-2 text-left hover:bg-ink/5"><span className="grid h-7 w-7 place-items-center rounded-full bg-moss text-xs font-bold text-ink">{user.name.charAt(0).toUpperCase()}</span><span><strong className="block max-w-28 truncate text-xs">{user.name}</strong><small className="block text-[10px] text-ink/50">{roleLabel(user.role)}</small></span></Link><Link href="/settings" aria-label="Settings" className="rounded-lg border border-ink/15 p-2 text-ink/60 hover:bg-ink/5"><Settings2 size={16} /></Link><button type="button" onClick={signOut} className="rounded-lg border border-ink/15 px-3 py-2 text-xs font-semibold text-ink/60 hover:bg-ink/5">Sign out</button></div> : <Link href="/login" className="hidden rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-paper hover:bg-leaf sm:block">{copy.signIn}</Link>}
           <button type="button" onClick={() => setMobileOpen((open) => !open)} aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"} aria-expanded={mobileOpen} className="rounded-lg border border-ink/15 p-2 md:hidden">{mobileOpen ? <X size={18} /> : <Menu size={18} />}</button>
         </div>
       </div>

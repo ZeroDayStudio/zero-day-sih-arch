@@ -7,8 +7,7 @@ const PORT = process.env.PORT || 5000;
 
 async function startServer() {
   if (!process.env.JWT_SECRET) {
-    process.env.JWT_SECRET = 'local-development-secret-change-me';
-    console.warn('JWT_SECRET is not configured; using a development-only secret');
+    throw new Error('JWT_SECRET is required to start the server');
   }
 
   await connectDatabase();

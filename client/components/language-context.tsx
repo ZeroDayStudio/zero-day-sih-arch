@@ -23,6 +23,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     if (saved === "en" || saved === "hi") setLocale(saved);
   }, []);
 
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
+
   function toggleLocale() {
     setLocale((current) => {
       const next = current === "en" ? "hi" : "en";

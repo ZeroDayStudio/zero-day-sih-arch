@@ -18,7 +18,8 @@ async function createApplication(req, res) {
 
 async function getMyApplications(req, res) {
   const applications = await Application.find({ studentId: req.user._id }).populate('opportunityId').sort({ createdAt: -1 }).lean();
-  return res.json({ applications });
+  const enriched = await Promise.all(applications.map(async (application) => ({ ...application, match: await Match.findOne({ studentId: req.user._id, opportunityId: application.opportunityId._id }).select('score explanation').lean() })));
+  return res.json({ applications: enriched });
 }
 
 async function getOpportunityApplications(req, res) {
