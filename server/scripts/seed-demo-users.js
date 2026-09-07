@@ -101,6 +101,31 @@ async function upsertUser(account, passwordHash) {
 }
 
 async function upsertProfile(userId, data) {
+  const existingProfile = await SkillProfile.findOne({ userId });
+  if (!existingProfile && data.publicSlug) {
+    const profileWithSlug = await SkillProfile.findOne({
+      publicSlug: data.publicSlug,
+    });
+    if (profileWithSlug) {
+      return SkillProfile.findOneAndUpdate(
+        { _id: profileWithSlug._id },
+        { userId, ...data },
+        {
+          returnDocument: "after",
+          setDefaultsOnInsert: true,
+          runValidators: true,
+        },
+      );
+    }
+  }
+
+  if (existingProfile && data.publicSlug !== existingProfile.publicSlug) {
+    await SkillProfile.updateOne(
+      { publicSlug: data.publicSlug, userId: { $ne: userId } },
+      { $unset: { publicSlug: 1 } },
+    );
+  }
+
   return SkillProfile.findOneAndUpdate(
     { userId },
     { userId, ...data },
