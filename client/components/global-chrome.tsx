@@ -15,7 +15,7 @@ export function GlobalNav() {
   const { user, signOut } = useAuth();
   const copy = dictionary.nav;
   const workspace = user ? roleHome(user.role) : "/login";
-  const links = user ? [["/", copy.home], ...roleNavigation(user.role).map((item) => [item.href, item.label])] : [["/", copy.home], ["/match", copy.opportunities], ["/login", copy.signIn]];
+  const links = user ? [["/", copy.home], ...roleNavigation(user.role).map((item) => [item.href, item.label])] : [["/", copy.home], ["/match", copy.opportunities], ["/docs", "Docs"], ["/system-design", "System design"]];
 
   return <>
     <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-paper">Skip to content</a>
@@ -42,5 +42,5 @@ export function GlobalNav() {
 export function GlobalFooter() {
   const { dictionary } = useLanguage();
   const copy = dictionary.footer;
-  return <footer className="border-t border-ink/10 bg-[#edf2f4]" role="contentinfo"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm sm:flex-row sm:items-center sm:justify-between lg:px-10"><div><Brand /><p className="mt-2 max-w-xs text-xs leading-5 text-ink/50">{copy.description}</p><p className="mt-3 text-xs font-medium text-ink/60">Developed by Yash Vardhan | Team Zero Day | Smart India Hackathon 2026 | SIH26044</p></div><div className="flex items-center gap-5 text-xs text-ink/50"><Link href="/" className="hover:text-ink">{copy.privacy}</Link><Link href="/" className="hover:text-ink">{copy.accessibility}</Link></div></div></footer>;
+  return <footer className="border-t border-ink/10 bg-[#edf2f4]" role="contentinfo"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm sm:flex-row sm:items-center sm:justify-between lg:px-10"><div><Brand /><p className="mt-2 max-w-xs text-xs leading-5 text-ink/50">{copy.description}</p><p className="mt-3 text-xs font-medium text-ink/60">Developed by Yash Vardhan | Team Zero Day | Smart India Hackathon 2026 | SIH26044</p></div><div className="flex flex-wrap items-center gap-5 text-xs text-ink/50"><Link href="/docs" className="hover:text-ink">Docs & team</Link><Link href="/system-design" className="hover:text-ink">System design</Link><Link href="/privacy" className="hover:text-ink">{copy.privacy}</Link><Link href="/accessibility" className="hover:text-ink">{copy.accessibility}</Link></div></div></footer>;
 }

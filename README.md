@@ -1,5 +1,7 @@
 # AYUSH SkillSync
 
+![AYUSH SkillSync homepage](docs/screenshots/homepage.png)
+
 [![SIH 2026](https://img.shields.io/badge/Smart%20India%20Hackathon-2026-0f2027)](https://www.sih.gov.in/)
 [![Problem Statement](https://img.shields.io/badge/Problem%20Statement-SIH26044-347563)](https://www.sih.gov.in/)
 [![Next.js](https://img.shields.io/badge/Frontend-Next.js%2014-black)](https://nextjs.org/)
@@ -34,8 +36,6 @@ The client communicates with the Express API through `NEXT_PUBLIC_API_URL`. Auth
 ## Demonstration
 
 ### Employer workspace
-
-![AYUSH SkillSync employer workspace](docs/screenshots/homepage.png)
 
 The presentation flow is:
 
