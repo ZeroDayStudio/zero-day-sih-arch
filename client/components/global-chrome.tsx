@@ -15,7 +15,7 @@ export function GlobalNav() {
   const { user, signOut } = useAuth();
   const copy = dictionary.nav;
   const workspace = user ? roleHome(user.role) : "/login";
-  const links = user ? [["/", copy.home], ...roleNavigation(user.role).map((item) => [item.href, item.label])] : [["/", copy.home], ["/match", copy.opportunities], ["/docs", "Docs"], ["/system-design", "System design"]];
+  const links = user ? [["/", copy.home], ...roleNavigation(user.role).map((item) => [item.href, item.label])] : [["/", copy.home], ["/match", copy.opportunities]];
 
   return <>
     <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-paper">Skip to content</a>

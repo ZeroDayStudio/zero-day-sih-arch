@@ -1,12 +1,48 @@
-import { Activity, Cloud, Database, FileCheck2, Globe2, LockKeyhole, Server, UsersRound } from "lucide-react";
+import { Activity, ArrowDown, ArrowRight, Cloud, Database, FileCheck2, Globe2, LockKeyhole, Server, UsersRound } from "lucide-react";
 
-const layers = [
-  { label: "Experience layer", tone: "bg-[#edf2f1]", items: [{ icon: Globe2, title: "Web & mobile browsers", text: "Next.js / React / responsive workspaces" }] },
-  { label: "Edge & delivery", tone: "bg-[#f4efe6]", items: [{ icon: Cloud, title: "API gateway + load balancer", text: "HTTPS · REST · WebSockets · rate limits" }] },
-  { label: "Application services", tone: "bg-[#e9eef3]", items: [{ icon: LockKeyhole, title: "Identity & access", text: "JWT · role-based access" }, { icon: Activity, title: "Matching engine", text: "NLP signals · explainable scoring" }, { icon: FileCheck2, title: "Verification service", text: "Evidence · QR passport validation" }] },
-  { label: "Data & intelligence", tone: "bg-[#edf2f1]", items: [{ icon: Database, title: "MongoDB", text: "Users · taxonomy · opportunities · matches" }, { icon: Server, title: "Redis + object storage", text: "Cache · sessions · certificates · media" }] },
+const actors = ["Students", "Institutions", "Employers", "Mentors"];
+const services = [
+  { icon: LockKeyhole, title: "Identity & access", text: "JWT sessions, roles, permissions" },
+  { icon: UsersRound, title: "Profiles & taxonomy", text: "Competencies, curricula, evidence" },
+  { icon: Activity, title: "Matching engine", text: "Explainable fit and skill gaps" },
+  { icon: FileCheck2, title: "Verification", text: "Reviews, QR passports, audit trail" },
+];
+const dataStores = [
+  { icon: Database, title: "MongoDB", text: "Users, profiles, taxonomy, opportunities" },
+  { icon: Server, title: "Redis", text: "Match cache and session state" },
+  { icon: Cloud, title: "Object storage", text: "Certificates, resumes, media" },
 ];
 
+type NodeIcon = typeof Globe2;
+function Node({ icon: Icon, title, text }: { icon: NodeIcon; title: string; text: string }) {
+  return (
+    <article className="border border-ink/15 bg-white p-4 shadow-[0_8px_20px_rgba(16,42,67,.05)]">
+      <div className="flex items-center justify-between gap-3"><Icon size={18} className="text-leaf" /><span className="font-mono text-[9px] uppercase tracking-[.16em] text-ink/35">node</span></div>
+      <h3 className="mt-4 text-sm font-bold">{title}</h3>
+      <p className="mt-1 text-xs leading-5 text-ink/55">{text}</p>
+    </article>
+  );
+}
+
 export default function SystemDesignPage() {
-  return <main className="mx-auto max-w-7xl px-5 py-16 lg:px-10"><div className="flex flex-wrap items-end justify-between gap-6"><div><p className="eyebrow">Architecture / v1</p><h1 className="mt-4 max-w-3xl font-serif text-6xl tracking-[-.06em]">One system. Many pathways.</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-ink/65">A production-minded view of how SkillSync carries evidence from a learner’s browser to trusted, explainable opportunity matches.</p></div></div><section className="relative mt-14 overflow-hidden border border-ink/15 bg-white p-5 shadow-[0_18px_60px_rgba(16,42,67,.08)] sm:p-8"><div className="absolute inset-0 opacity-40" style={{ backgroundImage: "linear-gradient(#0f202708 1px, transparent 1px), linear-gradient(90deg, #0f202708 1px, transparent 1px)", backgroundSize: "24px 24px" }} /><div className="relative space-y-3">{layers.map((layer, layerIndex) => <div key={layer.label}><div className="mb-2 flex items-center gap-3"><span className="font-mono text-[10px] font-bold uppercase tracking-[.18em] text-ink/45">0{layerIndex + 1}</span><h2 className="text-xs font-bold uppercase tracking-[.16em] text-ink/55">{layer.label}</h2></div><div className={`grid gap-3 ${layer.items.length > 1 ? "md:grid-cols-3" : "md:grid-cols-1"}`}>{layer.items.map(({ icon: Icon, title, text }) => <article key={title} className={`${layer.tone} min-h-24 border border-ink/10 p-4`}><div className="flex items-start justify-between gap-3"><Icon size={19} className="text-leaf" /><span className="font-mono text-[9px] uppercase tracking-[.14em] text-ink/35">service</span></div><h3 className="mt-4 text-sm font-bold">{title}</h3><p className="mt-1 text-xs leading-5 text-ink/55">{text}</p></article>)}</div>{layerIndex < layers.length - 1 && <div className="mx-auto flex h-8 w-px flex-col items-center border-l border-dashed border-leaf/60"><span className="mt-2 text-xs text-leaf">↓</span></div>}</div>)}</div></section><section className="mt-12 grid gap-4 md:grid-cols-3"><article className="border-t-2 border-leaf pt-4"><h2 className="font-semibold">Trust boundary</h2><p className="mt-2 text-sm leading-6 text-ink/55">Identity, permissions, uploads, and verification remain explicit service responsibilities instead of being hidden in UI logic.</p></article><article className="border-t-2 border-saffron pt-4"><h2 className="font-semibold">Explainability</h2><p className="mt-2 text-sm leading-6 text-ink/55">Match results can expose skill fit, domain fit, eligibility, location, and availability as separate signals.</p></article><article className="border-t-2 border-coral pt-4"><h2 className="font-semibold">Operations</h2><p className="mt-2 text-sm leading-6 text-ink/55">Docker, CI/CD, managed MongoDB, Redis, object storage, observability, and backups complete the deployment story.</p></article></section><div className="mt-12 flex items-center gap-3 border-t border-ink/10 pt-6 text-xs text-ink/45"><UsersRound size={15} /> Architecture is a living reference and should be revisited as production integrations are added.</div></main>;
+  return (
+    <main className="mx-auto max-w-7xl px-5 py-14 lg:px-10">
+      <header className="max-w-3xl"><p className="eyebrow">Architecture / v1</p><h1 className="mt-4 font-serif text-5xl leading-[.98] tracking-[-.05em] sm:text-6xl">The system behind the signal.</h1><p className="mt-6 text-lg leading-8 text-ink/65">A practical map of how verified competency evidence moves through SkillSync and becomes an explainable pathway.</p></header>
+      <section aria-labelledby="map-title" className="relative mt-12 overflow-hidden border border-ink/15 bg-[#f5f7f6] p-5 sm:p-8">
+        <div className="absolute inset-0 opacity-45" style={{ backgroundImage: "linear-gradient(#0f202708 1px, transparent 1px), linear-gradient(90deg, #0f202708 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+        <div className="relative">
+          <div className="flex items-center justify-between border-b border-ink/10 pb-4"><div><p className="eyebrow">System map</p><h2 id="map-title" className="mt-1 text-xl font-semibold">Evidence to opportunity</h2></div><span className="hidden items-center gap-2 text-xs font-semibold text-ink/45 sm:flex"><span className="h-2 w-2 rounded-full bg-leaf" /> Production boundary</span></div>
+          <div className="mt-8 grid items-stretch gap-4 lg:grid-cols-[.7fr_32px_1.7fr_32px_1.15fr]">
+            <div className="flex flex-col gap-3"><p className="font-mono text-[10px] font-bold uppercase tracking-[.18em] text-ink/45">01 / people</p><div className="flex flex-1 flex-col justify-center gap-2 border border-leaf/25 bg-[#e8f0ea] p-4">{actors.map((actor) => <div key={actor} className="flex items-center gap-2 text-sm font-semibold"><Globe2 size={15} className="text-leaf" />{actor}</div>)}<div className="mt-3 border-t border-leaf/20 pt-3 text-xs leading-5 text-ink/55">Browser clients<br />Next.js / React / mobile web</div></div></div>
+            <div className="hidden items-center justify-center lg:flex"><ArrowRight className="text-leaf" /></div>
+            <div className="flex flex-col gap-3"><p className="font-mono text-[10px] font-bold uppercase tracking-[.18em] text-ink/45">02 / application layer</p><div className="grid flex-1 gap-3 sm:grid-cols-2">{services.map((service) => <Node key={service.title} {...service} />)}</div><div className="flex items-center justify-center gap-2 text-xs font-semibold text-leaf lg:hidden"><ArrowDown size={15} /> HTTPS / REST / WebSockets</div></div>
+            <div className="hidden items-center justify-center lg:flex"><ArrowRight className="text-leaf" /></div>
+            <div className="flex flex-col gap-3"><p className="font-mono text-[10px] font-bold uppercase tracking-[.18em] text-ink/45">03 / persistence</p><div className="flex flex-1 flex-col justify-center gap-3">{dataStores.map((store) => <Node key={store.title} {...store} />)}</div></div>
+          </div>
+          <div className="mt-8 flex flex-col items-center gap-2 border-t border-dashed border-ink/20 pt-6 text-center"><ArrowDown size={16} className="text-leaf" /><p className="font-mono text-[10px] font-bold uppercase tracking-[.18em] text-ink/45">04 / operations</p><div className="grid w-full max-w-3xl gap-3 sm:grid-cols-3"><div className="border border-ink/10 bg-ink p-3 text-xs font-semibold text-paper">Docker + CI/CD</div><div className="border border-ink/10 bg-ink p-3 text-xs font-semibold text-paper">AWS / Render / Vercel</div><div className="border border-ink/10 bg-ink p-3 text-xs font-semibold text-paper">Logs + backups</div></div></div>
+        </div>
+      </section>
+      <section className="mt-12 grid gap-6 border-t border-ink/10 pt-8 md:grid-cols-3"><div><p className="eyebrow">Trust</p><h2 className="mt-2 text-lg font-semibold">Clear boundaries</h2><p className="mt-2 text-sm leading-6 text-ink/55">Authentication, uploads, verification, and permissions are explicit service responsibilities.</p></div><div><p className="eyebrow">Reasoning</p><h2 className="mt-2 text-lg font-semibold">Explainable matches</h2><p className="mt-2 text-sm leading-6 text-ink/55">Skill fit, domain fit, eligibility, location, and availability remain visible as separate signals.</p></div><div><p className="eyebrow">Scale</p><h2 className="mt-2 text-lg font-semibold">Ready to evolve</h2><p className="mt-2 text-sm leading-6 text-ink/55">The monolith can split along these service boundaries as usage, integrations, and governance mature.</p></div></section>
+    </main>
+  );
 }
