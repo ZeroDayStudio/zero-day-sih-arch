@@ -35,8 +35,8 @@ export function useAuth() {
   return context;
 }
 
-export function roleLabel(role: Role | undefined) {
-  return role ? role.charAt(0).toUpperCase() + role.slice(1) : "Guest";
+export function roleLabel(role: Role | undefined, labels?: Record<Role, string>) {
+  return role ? labels?.[role] || role.charAt(0).toUpperCase() + role.slice(1) : "Guest";
 }
 
 export function roleHome(role: Role) {
@@ -45,11 +45,10 @@ export function roleHome(role: Role) {
 
 export type RoleNavigationItem = { href: string; label: string };
 
-export function roleNavigation(role: Role): RoleNavigationItem[] {
+export function roleNavigation(role: Role, labels?: { dashboard: string; opportunities: string; passport: string; taxonomy: string; postOpportunity: string }): RoleNavigationItem[] {
+  const navigation = labels || { dashboard: "Dashboard", opportunities: "Opportunities", passport: "Skill passport", taxonomy: "AYUSH taxonomy", postOpportunity: "Post opportunity" };
   const home = roleHome(role);
-  if (role === "student") return [{ href: home, label: "Dashboard" }, { href: "/match", label: "Opportunities" }, { href: "/passport", label: "Skill passport" }];
-  if (role === "employer") return [{ href: home, label: "Dashboard" }, { href: "/dashboard/employer/opportunities/new", label: "Post opportunity" }, { href: "/taxonomy", label: "AYUSH taxonomy" }];
-  if (role === "institution") return [{ href: home, label: "Dashboard" }, { href: "/taxonomy", label: "AYUSH taxonomy" }];
-  if (role === "mentor") return [{ href: home, label: "Dashboard" }, { href: "/taxonomy", label: "AYUSH taxonomy" }];
-  return [{ href: home, label: "Dashboard" }, { href: "/taxonomy", label: "AYUSH taxonomy" }];
+  if (role === "student") return [{ href: home, label: navigation.dashboard }, { href: "/match", label: navigation.opportunities }, { href: "/passport", label: navigation.passport }];
+  if (role === "employer") return [{ href: home, label: navigation.dashboard }, { href: "/dashboard/employer/opportunities/new", label: navigation.postOpportunity }, { href: "/taxonomy", label: navigation.taxonomy }];
+  return [{ href: home, label: navigation.dashboard }, { href: "/taxonomy", label: navigation.taxonomy }];
 }

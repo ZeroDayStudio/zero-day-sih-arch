@@ -6,21 +6,24 @@ import { FormEvent, Suspense, useState } from "react";
 import { ArrowLeft, ArrowRight, Eye, EyeOff, LockKeyhole, Mail, ShieldCheck, UserRound } from "lucide-react";
 import { Brand } from "../../../components/brand";
 import { roleHome } from "../../../components/auth-context";
+import { useLanguage } from "../../../components/language-context";
 import { login, register, Role } from "../../../lib/api";
-
-const roles: { value: Role; label: string; caption: string }[] = [
-  { value: "student", label: "Student", caption: "Build your skills" },
-  { value: "institution", label: "Institution", caption: "Shape curriculum" },
-  { value: "employer", label: "Employer", caption: "Find emerging talent" },
-  { value: "mentor", label: "Mentor", caption: "Review evidence" },
-  { value: "admin", label: "Administrator", caption: "Govern the system" },
-];
 
 export default function LoginPage() {
   return <Suspense fallback={<div className="grid min-h-screen place-items-center bg-paper"><p className="eyebrow">Loading workspace...</p></div>}><LoginForm /></Suspense>;
 }
 
 function LoginForm() {
+  const { dictionary } = useLanguage();
+  const copy = dictionary.auth;
+  const nav = dictionary.nav;
+  const roles: { value: Role; label: string; caption: string }[] = [
+    { value: "student", label: nav.roleStudent, caption: copy.roleStudentCaption },
+    { value: "institution", label: nav.roleInstitution, caption: copy.roleInstitutionCaption },
+    { value: "employer", label: nav.roleEmployer, caption: copy.roleEmployerCaption },
+    { value: "mentor", label: nav.roleMentor, caption: copy.roleMentorCaption },
+    { value: "admin", label: nav.roleAdmin, caption: copy.roleAdminCaption },
+  ];
   const params = useSearchParams();
   const router = useRouter();
   const requestedRole = params.get("role") as Role;
