@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html[lang="hi"] body {
+  font-family: "Nirmala UI", "Noto Sans Devanagari", sans-serif;
+}
+
 :root {
   --background: #f7f9fb;
   --foreground: #0f2027;
