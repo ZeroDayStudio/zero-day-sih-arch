@@ -166,10 +166,10 @@ server/tests/           API and service tests
 
 ## Team Zero Day
 
-**Anurag** - Team Lead, Technical and Prototype
+**Anurag Sinha** - Team Lead, Technical and Prototype
 [Portfolio](https://anurag-pixel.vercel.app) · [GitHub](https://github.com/anuragg-pixel) · [LinkedIn](https://linkedin.com/in/anurag-pixel)
 
-**Nausheen** - Technical and Prototype
+**Nausheen Firdous** - Technical and Prototype
 [GitHub](https://github.com/nausheenfirdous) · [LinkedIn](https://www.linkedin.com/in/nausheen-firdous-75844a387/)
 
 **Yash Vardhan** - Technical and Prototype
@@ -177,7 +177,7 @@ server/tests/           API and service tests
 
 **P. Sharanya** - Technical and Presentation
 
-**Nikhil** - Technical and Presentation
+**Nikhil Verma** - Technical and Presentation
 [GitHub](https://github.com/Nikhil-phoenix) · [LinkedIn](https://www.linkedin.com/in/nikhil-verma-aa9784393/)
 
 **Smriti Ipsa** - Technical and Presentation
