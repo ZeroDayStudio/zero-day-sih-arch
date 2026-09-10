@@ -175,11 +175,9 @@ server/tests/           API and service tests
 **Yash Vardhan** - Technical and Prototype
 [Portfolio](https://yash-pluto.vercel.app) · [GitHub](https://github.com/yash-pluto) · [LinkedIn](https://linkedin.com/in/vardhan-yash3105)
 
-**Shreas** - Technical and Presentation
-[GitHub](https://github.com/shreas-shivam) · [LinkedIn](https://www.linkedin.com/in/shreas-shivam-4b724b38a/)
+**P. Sharanya** - Technical and Presentation
 
 **Nikhil** - Technical and Presentation
 [GitHub](https://github.com/Nikhil-phoenix) · [LinkedIn](https://www.linkedin.com/in/nikhil-verma-aa9784393/)
 
-**Shraddha** - Technical and Presentation
-[GitHub](https://github.com/Shraddha-Rawat) · [LinkedIn](https://www.linkedin.com/in/shraddha-kumari-5392b3384/)
+**Smriti Ipsa** - Technical and Presentation
